@@ -1,6 +1,6 @@
 const errorHandler = (err, req, res, next) => {
-  // let message = err.message || "Internal Server Error"
-  let message = "Internal Server Error"
+  let message = err.message || "Internal Server Error"
+  // let message = "Internal Server Error"
   let code = err.statusCode || 500
 
   if (err.name === "SequelizeValidationError") {

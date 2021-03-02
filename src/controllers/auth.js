@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { Employee } from '../sequelize.js'
 import asyncHandler from '../middlewares/asyncHandler.js'
 
+
 // 登录
 export const login = asyncHandler(async function login (req, res, next) {
   const { username, password } = req.body
@@ -42,5 +43,16 @@ export const login = asyncHandler(async function login (req, res, next) {
     code: 200,
     message: '登录成功',
     data: token
+  })
+})
+
+// 获取当前登录员工的个人信息
+export const me = asyncHandler(async (req, res) => {
+  // 查询部门
+  // 查询角色
+  res.status(200).json({
+    code: 200,
+    message: '获取信息成功',
+    data: req.employee
   })
 })
