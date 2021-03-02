@@ -6,6 +6,8 @@ import RoleMenuModel from './models/RoleMenu.js'
 import CampusModel from './models/Campus.js'
 import DepartModel from './models/Depart.js'
 import EmployeeModel from './models/Employee.js'
+import ClassModel from './models/Class.js'
+import ClassroomModel from './models/Classroom.js'
 
 // 加载.env 配置环境变量
 dotenv.config()
@@ -33,7 +35,12 @@ const RoleMenu = RoleMenuModel(sequelize, DataTypes)
 const Campus = CampusModel(sequelize, DataTypes)
 // 部门
 const Depart = DepartModel(sequelize, DataTypes)
+// 员工
 const Employee = EmployeeModel(sequelize, DataTypes)
+// 班级
+const Clazz = ClassModel(sequelize, DataTypes)
+// 教室
+const Classroom = ClassroomModel(sequelize, DataTypes)
 
 // Menu和Role的多对垛映射
 Menu.belongsToMany(Role, { through: RoleMenu, foreignKey: "menuId" })
@@ -51,11 +58,32 @@ Employee.belongsTo(Depart)
 Role.hasMany(Employee)
 Employee.belongsTo(Role)
 
+// 班级和校区，教室的关系
+
+// 去掉了班级和员工表的主外键关系，通过 classMasterId标识班主任
+// Employee.hasMany(Clazz)
+// Clazz.belongsTo(Employee)
+
+Campus.hasMany(Clazz)
+Clazz.belongsTo(Campus)
+
+Classroom.hasMany(Clazz)
+Clazz.belongsTo(Classroom)
+
+// 教室和校区的关系
+Campus.hasMany(Classroom)
+Classroom.belongsTo(Campus)
+
+// 校区和员工 再创建关联的话出现循环引用 Campuses -> Employees -> Departs => Campuses
+// Campus.belongsTo(Employee, { as: 'CampusMasterId' })
+
 export {
   Role,
   Menu,
   RoleMenu,
   Campus,
   Depart,
-  Employee
+  Employee,
+  Clazz,
+  Classroom
 }

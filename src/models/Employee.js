@@ -46,7 +46,7 @@ export default function (sequelize, DataTypes) {
       allowNull: true
     },
     birthday: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATE,
       allowNull: true
     },
     // 员工状态

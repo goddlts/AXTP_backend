@@ -1,5 +1,5 @@
 /**
- * 定义 Sequelize 模型
+ * 定义 Sequelize 模型，部门
  * @param { import('sequelize').Sequelize } sequelize 
  * @param { import('sequelize').DataTypes } DataTypes 
  */

@@ -1,19 +1,24 @@
 /**
- * 定义 Sequelize 模型，角色
+ * 定义 Sequelize 模型，教室
  * @param { import('sequelize').Sequelize } sequelize 
  * @param { import('sequelize').DataTypes } DataTypes 
  */
 export default function (sequelize, DataTypes) {
-  return sequelize.define('Role', {
+  return sequelize.define('Classroom', {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    roleName: {
+    classroomName: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: '空闲'
     },
     desc: {
       type: DataTypes.STRING,
