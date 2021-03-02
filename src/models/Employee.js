@@ -11,6 +11,7 @@ export default function (sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
+    // 登录名
     username: {
       type: DataTypes.STRING,
       allowNull: false
@@ -69,6 +70,12 @@ export default function (sequelize, DataTypes) {
     major: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    // 头像，需要一个默认的头像
+    avatar: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: ''
     },
     desc: {
       type: DataTypes.STRING,
