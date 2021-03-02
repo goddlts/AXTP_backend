@@ -32,7 +32,8 @@ export const login = asyncHandler(async function login (req, res, next) {
     id: employee.id,
     username: employee.username,
     realname: employee.realname,
-    avatar: employee.avatar
+    avatar: employee.avatar,
+    tokenCreated: Date.now()
   }
 
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -43,6 +44,15 @@ export const login = asyncHandler(async function login (req, res, next) {
     code: 200,
     message: '登录成功',
     data: token
+  })
+})
+
+// 退出 TODO：token的处理
+export const signout = asyncHandler(async (req, res) => {
+  res.status(200).json({
+    code: 200,
+    message: '退出成功',
+    data: {}
   })
 })
 

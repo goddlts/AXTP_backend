@@ -3,6 +3,7 @@ import express from 'express'
 import cors from 'cors'
 import errorHandler from './middlewares/errorHandler.js'
 import authRouter from './routes/auth.js'
+import menuRouter from './routes/menu.js'
 
 // 加载.env 配置环境变量
 dotenv.config()
@@ -18,6 +19,7 @@ app.use(cors())
 
 // 设置路由
 app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/menu', menuRouter)
 
 // 错误
 app.use(errorHandler)

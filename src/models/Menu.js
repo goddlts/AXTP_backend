@@ -39,6 +39,11 @@ export default function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true
     },
+    // 权限标识，备用
+    permisson: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     desc: {
       type: DataTypes.STRING,
       allowNull: true

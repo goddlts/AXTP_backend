@@ -1,0 +1,325 @@
+{
+  "meta": {
+    "status": 200,
+    "msg": "j#NgIo"
+  },
+  "data": [
+    {
+      "id": 1,
+      "path": "/sys",
+      "component": "layout",
+      "name": "sys",
+      "order": 1,
+      "hidden": false,
+      "meta": {
+        "title": "权限管理",
+        "icon": "el-icon-s-management"
+      },
+      "children": [
+        {
+          "id": 11,
+          "path": "role",
+          "component": "views/sys/role",
+          "name": "role",
+          "order": 1,
+          "hidden": false,
+          "meta": {
+            "title": "角色管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        },
+        {
+          "id": 12,
+          "path": "menu",
+          "component": "views/sys/menu",
+          "name": "menu",
+          "order": 2,
+          "hidden": false,
+          "meta": {
+            "title": "菜单管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        },
+        {
+          "id": 13,
+          "parentId": 1,
+          "path": "set",
+          "component": "views/sys/set",
+          "name": "set",
+          "order": 3,
+          "hidden": false,
+          "meta": {
+            "title": "分配角色",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "path": "/baseinfo",
+      "component": "layout",
+      "name": "baseinfo",
+      "order": 2,
+      "hidden": false,
+      "meta": {
+        "title": "基础数据",
+        "icon": "el-icon-document"
+      },
+      "children": [
+        {
+          "id": 21,
+          "path": "/baseinfo/campus",
+          "component": "views/baseinfo/campus",
+          "name": "campusindex",
+          "order": 1,
+          "hidden": false,
+          "meta": {
+            "title": "校区管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        },
+        {
+          "id": 22,
+          "path": "/baseinfo/depart",
+          "component": "views/baseinfo/depart",
+          "name": "depart",
+          "order": 2,
+          "hidden": false,
+          "meta": {
+            "title": "部门管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        },
+        {
+          "id": 23,
+          "path": "/baseinfo/user",
+          "component": "views/baseinfo/user",
+          "name": "user",
+          "order": 3,
+          "hidden": false,
+          "meta": {
+            "title": "员工管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        },
+        {
+          "id": 24,
+          "path": "/baseinfo/class",
+          "component": "views/baseinfo/class",
+          "name": "class",
+          "order": 4,
+          "hidden": false,
+          "meta": {
+            "title": "班级管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        },
+        {
+          "id": 25,
+          "path": "/baseinfo/classroom",
+          "component": "views/baseinfo/classroom",
+          "name": "classroom",
+          "order": 5,
+          "hidden": false,
+          "meta": {
+            "title": "教室管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        },
+        {
+          "id": 26,
+          "path": "/baseinfo/student",
+          "component": "views/baseinfo/student",
+          "name": "student",
+          "order": 6,
+          "hidden": false,
+          "meta": {
+            "title": "学生管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "path": "/subject",
+      "component": "layout",
+      "name": "subject",
+      "order": 3,
+      "hidden": false,
+      "meta": {
+        "title": "课程管理",
+        "icon": "el-icon-s-data"
+      },
+      "children": [
+        {
+          "id": 31,
+          "path": "",
+          "component": "views/subject/index",
+          "name": "subject-index",
+          "order": 1,
+          "hidden": false,
+          "meta": {
+            "title": "学科管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        },
+        {
+          "id": 32,
+          "path": "/subject/book",
+          "component": "views/subject/book",
+          "name": "book",
+          "order": 2,
+          "hidden": false,
+          "meta": {
+            "title": "书籍管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        },
+        {
+          "id": 33,
+          "path": "/subject/chapter",
+          "component": "views/subject/chapter",
+          "name": "chapter",
+          "order": 3,
+          "hidden": false,
+          "meta": {
+            "title": "章节管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        },
+        {
+          "id": 34,
+          "path": "/subject/feedback",
+          "component": "views/subject/feedback",
+          "name": "feedback-item",
+          "order": 4,
+          "hidden": false,
+          "meta": {
+            "title": "反馈条目",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "path": "/eacenter",
+      "component": "layout",
+      "name": "eacenter",
+      "order": 4,
+      "hidden": false,
+      "meta": {
+        "title": "教务中心",
+        "icon": "el-icon-s-order"
+      },
+      "children": [
+        {
+          "id": 41,
+          "path": "/eacenter/schedule",
+          "component": "views/eacenter/schedule",
+          "name": "schedule",
+          "order": 1,
+          "hidden": false,
+          "meta": {
+            "title": "教务排课",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "path": "/tcenter",
+      "component": "layout",
+      "name": "tcenter",
+      "order": 5,
+      "hidden": false,
+      "meta": {
+        "title": "教学中心",
+        "icon": "el-icon-s-platform"
+      },
+      "children": [
+        {
+          "id": 51,
+          "path": "/tcenter/attendance",
+          "component": "views/tcenter/attendance/attendance",
+          "name": "attendancelist",
+          "order": 1,
+          "hidden": false,
+          "meta": {
+            "title": "出勤管理",
+            "icon": "el-icon-menu"
+          },
+          "children": []
+        },
+        {
+          "id": 52,
+          "path": "/tcenter/:id/calltheroll",
+          "component": "views/tcenter/attendance/calltheroll",
+          "name": "calltheroll",
+          "order": 2,
+          "hidden": true,
+          "meta": {
+            "title": "点名表",
+            "icon": "el-icon-menu",
+            "activeMenu": "/tcenter/attendance"
+          }
+        },
+        {
+          "id": 53,
+          "path": "/tcenter/:id/attendance",
+          "component": "views/tcenter/attendance/attendancedetail",
+          "name": "attendancedetail",
+          "order": 3,
+          "hidden": true,
+          "meta": {
+            "title": "出勤详情",
+            "icon": "el-icon-menu",
+            "activeMenu": "/tcenter/attendance"
+          }
+        },
+        {
+          "id": 54,
+          "path": "/tcenter/exam",
+          "component": "views/tcenter/exam/index",
+          "name": "examlist",
+          "order": 4,
+          "hidden": false,
+          "meta": {
+            "title": "考试管理",
+            "icon": "el-icon-menu"
+          }
+        },
+        {
+          "id": 55,
+          "path": "/tcenter/exam/inputscore/:examid/:classid",
+          "component": "views/tcenter/exam/inputscore",
+          "name": "examinputscore",
+          "order": 5,
+          "hidden": true,
+          "meta": {
+            "title": "录入成绩",
+            "icon": "el-icon-menu",
+            "activeMenu": "/tcenter/exam"
+          }
+        }
+      ]
+    }
+  ]
+}
