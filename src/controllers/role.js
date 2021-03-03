@@ -1,7 +1,5 @@
-import { Depart, Employee, Campus } from '../../sequelize.js'
-import asyncHandler from '../../middlewares/asyncHandler.js'
-import pkg from 'sequelize'
-const Op = pkg.Op
+import { Role } from '../sequelize.js'
+import asyncHandler from '../middlewares/asyncHandler.js'
 
 export const list = asyncHandler(async (req, res, next) => {
   const pagenum = parseInt(req.query.pagenum ?? 1)
@@ -9,35 +7,24 @@ export const list = asyncHandler(async (req, res, next) => {
   const query = req.query.query ? JSON.parse(req.query.query) : ''
   
   // 处理查询条件
-  if (query.departName) {
-    query.departName = {
-      [Op.startsWith]: query.departName
+  if (query.roleName) {
+    query.roleName = {
+      [Op.startsWith]: query.roleName
     }
   }
-
-  const data = await Depart.findAndCountAll({
+  
+  const data = await Role.findAndCountAll({
     order: [[ 'id', 'DESC' ]],
     where: query,
-    include: [
-      { model: Campus }
-    ],
     // 跳过几个
     offset: (pagenum - 1) * pagesize,
     // 获取几个
     limit: pagesize
   })
 
-  for (let i = 0; i < data.rows.length; i++) {
-    const item = data.rows[i]
-    const employee = await Employee.findByPk(item.departMasterId, {
-      attributes: ['realname']
-    })
-    item.setDataValue('departMaster', employee?.realname)
-  }
-
   res.status(200).json({
     code: 200,
-    message: '获取校区列表成功',
+    message: '获取角色列表成功',
     data: {
       pagenum: pagenum,
       pagesize: pagesize,
@@ -48,7 +35,7 @@ export const list = asyncHandler(async (req, res, next) => {
 })
 
 export const add = asyncHandler(async (req, res, next) => {
-  const data = await Depart.create(req.body)
+  const data = await Role.create(req.body)
   res.status(201).json({
     code: 201,
     message: '添加成功',
@@ -58,7 +45,7 @@ export const add = asyncHandler(async (req, res, next) => {
 
 export const update = asyncHandler(async (req, res, next) => {
   const id = req.params.id
-  const data = await Depart.update(req.body, {
+  const data = await Role.update(req.body, {
     where: {
       id: id
     }
@@ -72,7 +59,7 @@ export const update = asyncHandler(async (req, res, next) => {
 
 export const del = asyncHandler(async (req, res, next) => {
   const id = req.params.id
-  const data = await Depart.destroy({
+  const data = await Role.destroy({
     where: {
       id
     }
@@ -92,17 +79,11 @@ export const del = asyncHandler(async (req, res, next) => {
 
 export const detail = asyncHandler(async (req, res, next) => {
   const id = req.params.id
-  const data = await Depart.findByPk(id)
-
-  const employee = await Employee.findByPk(data.departMasterId, {
-    attributes: ['realname']
-  })
-
-  data.setDataValue('departMaster', employee?.realname)
+  const data = await Role.findByPk(id)
 
   res.status(200).json({
     code: 200,
-    message: '获取部门详情成功',
+    message: '获取校区详情成功',
     data: data
   })
 })

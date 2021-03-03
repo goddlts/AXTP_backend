@@ -73,9 +73,15 @@ export const del = asyncHandler(async (req, res, next) => {
       id
     }
   })
+  let code = 200
+  let message = '删除成功'
+  if (data === 0) {
+    code = 404
+    message = '要删除的数据不存在'
+  }
   res.status(200).json({
-    code: 200,
-    message: '删除成功',
+    code: code,
+    message: message,
     data: data
   })
 })
