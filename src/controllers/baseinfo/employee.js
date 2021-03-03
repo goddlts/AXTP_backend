@@ -1,5 +1,6 @@
-import \{ Employee } from '../sequelize.js'
-import asyncHandler from '../middlewares/asyncHandler.js'
+import bcrypt from 'bcryptjs'
+import { Employee, Depart, Role } from '../../sequelize.js'
+import asyncHandler from '../../middlewares/asyncHandler.js'
 
 export const list = asyncHandler(async (req, res, next) => {
   const pagenum = parseInt(req.query.pagenum ?? 1)
@@ -13,9 +14,15 @@ export const list = asyncHandler(async (req, res, next) => {
     }
   }
   
-  const data = await Role.findAndCountAll({
+  const data = await Employee.findAndCountAll({
     order: [[ 'id', 'DESC' ]],
     where: query,
+    include: [
+      { model: Depart },
+      { model: Role }
+    ],
+    // 排除密码数据
+    attributes: { exclude: ['password'] },
     // 跳过几个
     offset: (pagenum - 1) * pagesize,
     // 获取几个
@@ -35,7 +42,10 @@ export const list = asyncHandler(async (req, res, next) => {
 })
 
 export const add = asyncHandler(async (req, res, next) => {
+  const salt = await bcrypt.genSalt(10)
+  req.body.password = await bcrypt.hash(req.body.password, salt)
   const data = await Employee.create(req.body)
+
   res.status(201).json({
     code: 201,
     message: '添加成功',
@@ -79,7 +89,14 @@ export const del = asyncHandler(async (req, res, next) => {
 
 export const detail = asyncHandler(async (req, res, next) => {
   const id = req.params.id
-  const data = await Employee.findByPk(id)
+  const data = await Employee.findByPk(id, {
+    include: [
+      { model: Depart },
+      { model: Role }
+    ],
+    // 排除密码数据
+    attributes: { exclude: ['password'] }
+  })
 
   res.status(200).json({
     code: 200,

@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs'
 /**
  * 定义 Sequelize 模型
  * @param { import('sequelize').Sequelize } sequelize 
@@ -14,11 +15,15 @@ export default function (sequelize, DataTypes) {
     // 登录名
     username: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        min: 6,
+      }
     },
     realname: {
       type: DataTypes.STRING,
@@ -44,7 +49,11 @@ export default function (sequelize, DataTypes) {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      unique: true,
+      validate: {
+        isEmail: true,
+      }
     },
     birthday: {
       type: DataTypes.DATE,

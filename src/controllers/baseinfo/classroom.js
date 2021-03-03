@@ -1,11 +1,11 @@
-import \{ Classroom } from '../sequelize.js'
-import asyncHandler from '../middlewares/asyncHandler.js'
+import { Classroom } from '../../sequelize.js'
+import asyncHandler from '../../middlewares/asyncHandler.js'
 
 export const list = asyncHandler(async (req, res, next) => {
   const pagenum = parseInt(req.query.pagenum ?? 1)
   const pagesize = parseInt(req.query.pagesize ?? 10)
   const query = req.query.query ? JSON.parse(req.query.query) : ''
-  
+  console.log(query)
   // 处理查询条件
   if (query.classroomName) {
     query.classroomName = {
@@ -13,7 +13,7 @@ export const list = asyncHandler(async (req, res, next) => {
     }
   }
   
-  const data = await Role.findAndCountAll({
+  const data = await Classroom.findAndCountAll({
     order: [[ 'id', 'DESC' ]],
     where: query,
     // 跳过几个

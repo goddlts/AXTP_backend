@@ -19,6 +19,8 @@ export const login = asyncHandler(async function login (req, res, next) {
       message: '用户名不存在'
     })
   }
+  const salt = await bcrypt.genSalt(10);
+  password = await bcrypt.hash(password, salt);
 
   const passwordMatch = await bcrypt.compare(password, employee.password)
   if (!passwordMatch) {

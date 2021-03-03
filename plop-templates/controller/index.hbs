@@ -1,4 +1,4 @@
-import \{ {{upperCase name}} } from '../sequelize.js'
+import { {{upperCase name}} } from '../sequelize.js'
 import asyncHandler from '../middlewares/asyncHandler.js'
 
 export const list = asyncHandler(async (req, res, next) => {
@@ -13,7 +13,7 @@ export const list = asyncHandler(async (req, res, next) => {
     }
   }
   
-  const data = await Role.findAndCountAll({
+  const data = await {{upperCase name}}.findAndCountAll({
     order: [[ 'id', 'DESC' ]],
     where: query,
     // 跳过几个

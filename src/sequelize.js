@@ -36,7 +36,7 @@ const Depart = DepartModel(sequelize, DataTypes)
 // 员工
 const Employee = EmployeeModel(sequelize, DataTypes)
 // 班级
-const Clazz = ClassModel(sequelize, DataTypes)
+const Class = ClassModel(sequelize, DataTypes)
 // 教室
 const Classroom = ClassroomModel(sequelize, DataTypes)
 
@@ -55,14 +55,14 @@ Employee.belongsTo(Role)
 // 班级和校区，教室的关系
 
 // 去掉了班级和员工表的主外键关系，通过 classMasterId标识班主任
-// Employee.hasMany(Clazz)
-// Clazz.belongsTo(Employee)
+// Employee.hasMany(Class)
+// Class.belongsTo(Employee)
 
-Campus.hasMany(Clazz)
-Clazz.belongsTo(Campus)
+Campus.hasMany(Class)
+Class.belongsTo(Campus)
 
-Classroom.hasMany(Clazz)
-Clazz.belongsTo(Classroom)
+Classroom.hasMany(Class)
+Class.belongsTo(Classroom)
 
 // 教室和校区的关系
 Campus.hasMany(Classroom)
@@ -77,6 +77,6 @@ export {
   Campus,
   Depart,
   Employee,
-  Clazz,
+  Class,
   Classroom
 }

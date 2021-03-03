@@ -1,6 +1,6 @@
 import express from 'express'
-import { list, add, del, update, detail } from '../controllers/employee.js'
-import { protect } from '../middlewares/auth.js'
+import { list, add, del, update, detail } from '../../controllers/baseinfo/employee.js'
+import { protect } from '../../middlewares/auth.js'
 
 const router = express.Router()
 
