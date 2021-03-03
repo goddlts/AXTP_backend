@@ -5,6 +5,7 @@ import errorHandler from './middlewares/errorHandler.js'
 import authRouter from './routes/auth.js'
 import menuRouter from './routes/menu.js'
 import campusRouter from './routes/baseinfo/campus.js'
+import departRouter from './routes/baseinfo/depart.js'
 
 // 加载.env 配置环境变量
 dotenv.config()
@@ -22,6 +23,7 @@ app.use(cors())
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/menu', menuRouter)
 app.use('/api/v1/campus', campusRouter)
+app.use('/api/v1/depart', departRouter)
 
 // 错误
 app.use(errorHandler)

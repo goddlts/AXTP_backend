@@ -15,6 +15,11 @@ export default function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
+    // 部门负责人
+    departMasterId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
     desc: {
       type: DataTypes.STRING,
       allowNull: true

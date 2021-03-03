@@ -17,7 +17,7 @@ export default function (sequelize, DataTypes) {
     },
     // 校长
     campusMasterId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     desc: {

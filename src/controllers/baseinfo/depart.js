@@ -1,13 +1,26 @@
-import { Campus, Employee } from '../../sequelize.js'
+import { Depart, Employee, Campus } from '../../sequelize.js'
 import asyncHandler from '../../middlewares/asyncHandler.js'
+import pkg from 'sequelize'
+const Op = pkg.Op
 
 export const list = asyncHandler(async (req, res, next) => {
   const pagenum = parseInt(req.query.pagenum ?? 1)
   const pagesize = parseInt(req.query.pagesize ?? 10)
   const query = req.query.query ? JSON.parse(req.query.query) : ''
-  const data = await Campus.findAndCountAll({
+  
+  // 处理查询条件
+  if (query.departName) {
+    query.departName = {
+      [Op.startsWith]: query.departName
+    }
+  }
+
+  const data = await Depart.findAndCountAll({
     order: [[ 'id', 'DESC' ]],
     where: query,
+    include: [
+      { model: Campus }
+    ],
     // 跳过几个
     offset: (pagenum - 1) * pagesize,
     // 获取几个
@@ -16,12 +29,11 @@ export const list = asyncHandler(async (req, res, next) => {
 
   for (let i = 0; i < data.rows.length; i++) {
     const item = data.rows[i]
-    const employee = await Employee.findByPk(item.campusMasterId, {
+    const employee = await Employee.findByPk(item.departMasterId, {
       attributes: ['realname']
     })
-    item.setDataValue('masterName', employee?.realname)
+    item.setDataValue('departMaster', employee?.realname)
   }
-
 
   res.status(200).json({
     code: 200,
@@ -36,7 +48,7 @@ export const list = asyncHandler(async (req, res, next) => {
 })
 
 export const add = asyncHandler(async (req, res, next) => {
-  const data = await Campus.create(req.body)
+  const data = await Depart.create(req.body)
   res.status(201).json({
     code: 201,
     message: '添加成功',
@@ -46,7 +58,7 @@ export const add = asyncHandler(async (req, res, next) => {
 
 export const update = asyncHandler(async (req, res, next) => {
   const id = req.params.id
-  const data = await Campus.update(req.body, {
+  const data = await Depart.update(req.body, {
     where: {
       id: id
     }
@@ -60,7 +72,7 @@ export const update = asyncHandler(async (req, res, next) => {
 
 export const del = asyncHandler(async (req, res, next) => {
   const id = req.params.id
-  const data = await Campus.destroy({
+  const data = await Depart.destroy({
     where: {
       id
     }
@@ -74,20 +86,17 @@ export const del = asyncHandler(async (req, res, next) => {
 
 export const detail = asyncHandler(async (req, res, next) => {
   const id = req.params.id
-  const campus = await Campus.findByPk(id, {
-    attributes: ['id', 'campusMasterId', 'campusName', 'desc']
+  const data = await Depart.findByPk(id)
+
+  const employee = await Employee.findByPk(data.departMasterId, {
+    attributes: ['realname']
   })
 
-  const employee = await Employee.findByPk(campus.campusMasterId, {
-    attributes: ['id', 'username', 'realname']
-  })
-
-  campus.setDataValue('campusMaster', employee.realname)
-  // campus.dataValues.campusMaster = employee.realname
+  data.setDataValue('departMaster', employee?.realname)
 
   res.status(200).json({
     code: 200,
-    message: '获取校区详情成功',
-    data: campus
+    message: '获取部门详情成功',
+    data: data
   })
 })
