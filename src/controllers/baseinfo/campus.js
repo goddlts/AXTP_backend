@@ -30,7 +30,6 @@ export const list = asyncHandler(async (req, res, next) => {
     item.setDataValue('masterName', employee?.realname)
   }
 
-
   res.status(200).json({
     code: 200,
     message: '获取校区列表成功',
@@ -79,7 +78,7 @@ export const del = asyncHandler(async (req, res, next) => {
     code = 404
     message = '要删除的数据不存在'
   }
-  res.status(200).json({
+  res.status(code).json({
     code: code,
     message: message,
     data: data
@@ -91,6 +90,14 @@ export const detail = asyncHandler(async (req, res, next) => {
   const campus = await Campus.findByPk(id, {
     attributes: ['id', 'campusMasterId', 'campusName', 'desc']
   })
+
+  if (!campus) {
+    return res.status(404).json({
+      code: 404,
+      message: '没有获取到数据',
+      data: campus
+    })
+  }
 
   const employee = await Employee.findByPk(campus.campusMasterId, {
     attributes: ['id', 'username', 'realname']

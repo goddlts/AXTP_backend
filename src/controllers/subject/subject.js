@@ -1,19 +1,19 @@
-import { Classroom } from '../../sequelize.js'
+import { Subject, Employee } from '../../sequelize.js'
 import asyncHandler from '../../middlewares/asyncHandler.js'
 
 export const list = asyncHandler(async (req, res, next) => {
   const pagenum = parseInt(req.query.pagenum ?? 1)
   const pagesize = parseInt(req.query.pagesize ?? 10)
   const query = req.query.query ? JSON.parse(req.query.query) : ''
-  console.log(query)
+  
   // 处理查询条件
-  if (query.classroomName) {
-    query.classroomName = {
-      [Op.startsWith]: query.classroomName
+  if (query.subjectName) {
+    query.subjectName = {
+      [Op.startsWith]: query.subjectName
     }
   }
   
-  const data = await Classroom.findAndCountAll({
+  const data = await Subject.findAndCountAll({
     order: [[ 'id', 'DESC' ]],
     where: query,
     // 跳过几个
@@ -21,6 +21,13 @@ export const list = asyncHandler(async (req, res, next) => {
     // 获取几个
     limit: pagesize
   })
+  for (let i = 0; i < data.rows.length; i++) {
+    const item = data.rows[i]
+    const employee = await Employee.findByPk(item.EmployeeId, {
+      attributes: ['realname']
+    })
+    item.setDataValue('masterName', employee?.realname)
+  }
 
   res.status(200).json({
     code: 200,
@@ -35,7 +42,7 @@ export const list = asyncHandler(async (req, res, next) => {
 })
 
 export const add = asyncHandler(async (req, res, next) => {
-  const data = await Classroom.create(req.body)
+  const data = await Subject.create(req.body)
   res.status(201).json({
     code: 201,
     message: '添加成功',
@@ -45,7 +52,7 @@ export const add = asyncHandler(async (req, res, next) => {
 
 export const update = asyncHandler(async (req, res, next) => {
   const id = req.params.id
-  const data = await Classroom.update(req.body, {
+  const data = await Subject.update(req.body, {
     where: {
       id: id
     }
@@ -59,7 +66,7 @@ export const update = asyncHandler(async (req, res, next) => {
 
 export const del = asyncHandler(async (req, res, next) => {
   const id = req.params.id
-  const data = await Classroom.destroy({
+  const data = await Subject.destroy({
     where: {
       id
     }
@@ -79,8 +86,8 @@ export const del = asyncHandler(async (req, res, next) => {
 
 export const detail = asyncHandler(async (req, res, next) => {
   const id = req.params.id
-  const data = await Classroom.findByPk(id)
-
+  const data = await Subject.findByPk(id, {
+  })
   if (!data) {
     return res.status(404).json({
       code: 404,
@@ -88,6 +95,10 @@ export const detail = asyncHandler(async (req, res, next) => {
       data: data
     })
   }
+  const employee = await Employee.findByPk(data.EmployeeId, {
+    attributes: ['realname']
+  })
+  data.setDataValue('masterName', employee.realname)
 
   res.status(200).json({
     code: 200,

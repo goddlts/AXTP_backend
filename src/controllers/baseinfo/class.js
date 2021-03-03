@@ -82,7 +82,7 @@ export const del = asyncHandler(async (req, res, next) => {
     code = 404
     message = '要删除的数据不存在'
   }
-  res.status(200).json({
+  res.status(code).json({
     code: code,
     message: message,
     data: data
@@ -97,6 +97,14 @@ export const detail = asyncHandler(async (req, res, next) => {
       { model: Classroom }
     ]
   })
+
+  if (!data) {
+    return res.status(404).json({
+      code: 404,
+      message: '没有获取到数据',
+      data: data
+    })
+  }
 
   const employee = await Employee.findByPk(data.classMasterId, {
     attributes: ['realname']

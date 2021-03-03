@@ -2,11 +2,16 @@ import pkg from 'sequelize'
 import dotenv from 'dotenv'
 import RoleModel from './models/Role.js'
 import MenuModel from './models/Menu.js'
-import CampusModel from './models/Campus.js'
-import DepartModel from './models/Depart.js'
-import EmployeeModel from './models/Employee.js'
-import ClassModel from './models/Class.js'
-import ClassroomModel from './models/Classroom.js'
+import CampusModel from './models/baseinfo/Campus.js'
+import DepartModel from './models/baseinfo/Depart.js'
+import EmployeeModel from './models/baseinfo/Employee.js'
+import ClassModel from './models/baseinfo/Class.js'
+import ClassroomModel from './models/baseinfo/Classroom.js'
+// 学科管理
+import SubjectModel from './models/subject/subject.js'
+import BookModel from './models/subject/book.js'
+import ChapterModel from './models/subject/chapter.js'
+
 
 // 加载.env 配置环境变量
 dotenv.config()
@@ -71,6 +76,25 @@ Classroom.belongsTo(Campus)
 // 校区和员工 再创建关联的话出现循环引用 Campuses -> Employees -> Departs => Campuses
 // Campus.belongsTo(Employee, { as: 'CampusMasterId' })
 
+// 学科管理表映射
+const Subject = SubjectModel(sequelize, DataTypes)
+const Book = BookModel(sequelize, DataTypes)
+const Chapter = ChapterModel(sequelize, DataTypes)
+
+Employee.hasOne(Subject)
+Subject.belongsTo(Employee)
+
+Subject.hasMany(Book)
+Book.belongsTo(Subject)
+
+Employee.hasMany(Book)
+Book.belongsTo(Employee)
+
+Book.hasMany(Chapter)
+Chapter.belongsTo(Book)
+
+
+
 export {
   Role,
   Menu,
@@ -78,5 +102,8 @@ export {
   Depart,
   Employee,
   Class,
-  Classroom
+  Classroom,
+  Subject,
+  Book,
+  Chapter
 }

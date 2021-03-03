@@ -84,7 +84,7 @@ export const del = asyncHandler(async (req, res, next) => {
     code = 404
     message = '要删除的数据不存在'
   }
-  res.status(200).json({
+  res.status(code).json({
     code: code,
     message: message,
     data: data
@@ -94,7 +94,13 @@ export const del = asyncHandler(async (req, res, next) => {
 export const detail = asyncHandler(async (req, res, next) => {
   const id = req.params.id
   const data = await Menu.findByPk(id)
-
+  if (!data) {
+    return res.status(404).json({
+      code: 404,
+      message: '没有获取到数据',
+      data: data
+    })
+  }
   res.status(200).json({
     code: 200,
     message: '获取校区详情成功',
