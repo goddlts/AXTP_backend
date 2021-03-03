@@ -17,7 +17,8 @@ export default function (sequelize, DataTypes) {
     },
     parentId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0
     },
     component: {
       type: DataTypes.STRING,
@@ -25,7 +26,8 @@ export default function (sequelize, DataTypes) {
     },
     hidden: {
       type: DataTypes.BOOLEAN,
-      allowNull: false
+      allowNull: false,
+      defaultValue: false
     },
     path: {
       type: DataTypes.STRING,

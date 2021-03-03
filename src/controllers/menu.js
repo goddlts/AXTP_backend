@@ -30,6 +30,78 @@ export const getAuthMenuTree = asyncHandler(async (req, res) => {
   })
 })
 
+// 所有的菜单树
+export const menuTree = asyncHandler(async (req, res) => {
+  let tree = []
+  const menus = await Menu.findAll({
+    order: [[ 'order', 'ASC' ]]
+  })
+
+  tree = getTreeData(menus)
+
+  res.status(200).json({
+    code: 200,
+    message: '获取信息成功',
+    data: tree
+  })
+})
+
+// 增删改
+export const add = asyncHandler(async (req, res, next) => {
+  const data = await Menu.create(req.body)
+  res.status(201).json({
+    code: 201,
+    message: '添加成功',
+    data: data
+  })
+})
+
+export const update = asyncHandler(async (req, res, next) => {
+  const id = req.params.id
+  const data = await Menu.update(req.body, {
+    where: {
+      id: id
+    }
+  })
+  res.status(200).json({
+    code: 200,
+    message: '更新成功',
+    data: data
+  })
+})
+
+export const del = asyncHandler(async (req, res, next) => {
+  const id = req.params.id
+  const data = await Menu.destroy({
+    where: {
+      id
+    }
+  })
+
+  let code = 200
+  let message = '删除成功'
+  if (data === 0) {
+    code = 404
+    message = '要删除的数据不存在'
+  }
+  res.status(200).json({
+    code: code,
+    message: message,
+    data: data
+  })
+})
+
+export const detail = asyncHandler(async (req, res, next) => {
+  const id = req.params.id
+  const data = await Menu.findByPk(id)
+
+  res.status(200).json({
+    code: 200,
+    message: '获取校区详情成功',
+    data: data
+  })
+})
+
 /**
  * 获取树形数据
  * @param { Array } menus 
