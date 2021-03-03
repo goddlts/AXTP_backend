@@ -7,6 +7,9 @@ import menuRouter from './routes/menu.js'
 import campusRouter from './routes/baseinfo/campus.js'
 import departRouter from './routes/baseinfo/depart.js'
 import roleRouter from './routes/role.js'
+import classRouter from './routes/baseinfo/class.js'
+import classroomRouter from './routes/baseinfo/classroom.js'
+import employeeRouter from './routes/baseinfo/employee.js'
 
 // 加载.env 配置环境变量
 dotenv.config()
@@ -26,6 +29,9 @@ app.use('/api/v1/menu', menuRouter)
 app.use('/api/v1/campus', campusRouter)
 app.use('/api/v1/depart', departRouter)
 app.use('/api/v1/role', roleRouter)
+app.use('/api/v1/class', classRouter)
+app.use('/api/v1/classroom', classroomRouter)
+app.use('/api/v1/employee', employeeRouter)
 
 // 错误
 app.use(errorHandler)

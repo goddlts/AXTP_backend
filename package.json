@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/app.js",
-    "start": "pm2 start src/app.js"
+    "start": "pm2 start src/app.js",
+    "plop": "plop --plopfile plopfile.cjs"
   },
   "keywords": [],
   "author": "",
@@ -19,5 +20,8 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
     "sequelize": "^6.5.0"
+  },
+  "devDependencies": {
+    "plop": "^2.7.4"
   }
 }
