@@ -15,7 +15,6 @@ export const list = asyncHandler(async (req, res, next) => {
       [Op.startsWith]: query.roleName
     }
   }
-  
   const data = await Role.findAndCountAll({
     order: [[ 'id', 'DESC' ]],
     where: query,

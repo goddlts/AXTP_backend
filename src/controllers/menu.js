@@ -1,5 +1,9 @@
 import { Menu, Role } from '../sequelize.js'
 import asyncHandler from '../middlewares/asyncHandler.js'
+import { isDef } from '../utils/index.js'
+
+import pkg from 'sequelize'
+const Op = pkg.Op
 
 // 根据用户的角色获取菜单树
 export const getAuthMenuTree = asyncHandler(async (req, res) => {
@@ -37,7 +41,54 @@ export const menuTree = asyncHandler(async (req, res) => {
     order: [[ 'order', 'ASC' ]]
   })
 
+  tree = getTreeDataNoHidden(menus)
+
+  res.status(200).json({
+    code: 200,
+    message: '获取信息成功',
+    data: tree
+  })
+})
+
+// 所有的菜单树
+export const allMenuTree = asyncHandler(async (req, res) => {
+  let tree = []
+  const query = req.query.query ? JSON.parse(req.query.query) : ''
+  // 处理查询条件
+  if (isDef(query.menuName)) {
+    query.menuName = {
+      [Op.substring]: query.menuName
+    }
+  }
+
+  const menus = await Menu.findAll({
+    where: query,
+    order: [[ 'order', 'ASC' ]]
+  })
+
   tree = getTreeData(menus)
+
+  res.status(200).json({
+    code: 200,
+    message: '获取信息成功',
+    data: tree
+  })
+})
+
+// 提供给下拉框使用的数据
+export const menuSelect = asyncHandler(async (req, res) => {
+  let tree = []
+  const level = req.query.level
+  let query = {}
+  if (level === '1') {
+    query.parentId = 0
+  }
+  const menus = await Menu.findAll({
+    where: query,
+    order: [[ 'order', 'ASC' ]]
+  })
+
+  tree = getTreeDataNoHidden(menus)
 
   res.status(200).json({
     code: 200,
@@ -128,6 +179,33 @@ function getTreeData (menus) {
   tree.forEach(menu => {
     menus.forEach(subMenu => {
       if (menu.id === subMenu.parentId) {
+        menu.dataValues.children.push(subMenu)
+      }
+    })
+  })
+  return tree
+}
+
+/**
+ * 获取树形数据 排除 hidden
+ * @param { Array } menus 
+ */
+function getTreeDataNoHidden (menus) {
+  const tree = []
+  menus.forEach(menu => {
+    if (menu.parentId === 0 && !menu.hidden) {
+      tree.push(menu)
+    }
+    menu.setDataValue('children', [])
+    menu.setDataValue('meta', {
+      title: menu.menuName,
+      icon: menu.icon
+    })
+  })
+
+  tree.forEach(menu => {
+    menus.forEach(subMenu => {
+      if (menu.id === subMenu.parentId && !subMenu.hidden) {
         menu.dataValues.children.push(subMenu)
       }
     })
