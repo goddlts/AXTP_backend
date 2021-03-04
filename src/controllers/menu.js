@@ -118,12 +118,17 @@ function getTreeData (menus) {
     if (menu.parentId === 0) {
       tree.push(menu)
     }
-    menu.dataValues.children = []
+    menu.setDataValue('children', [])
+    menu.setDataValue('meta', {
+      title: menu.menuName,
+      icon: menu.icon
+    })
   })
 
   tree.forEach(menu => {
     menus.forEach(subMenu => {
       if (menu.id === subMenu.parentId) {
+        console.log(menu.id, subMenu.parentId)
         menu.dataValues.children.push(subMenu)
       }
     })

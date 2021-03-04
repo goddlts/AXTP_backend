@@ -1,12 +1,12 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { Employee } from '../sequelize.js'
+import { Employee, Role } from '../sequelize.js'
 import asyncHandler from '../middlewares/asyncHandler.js'
 
 
 // 登录
 export const login = asyncHandler(async function login (req, res, next) {
-  const { username, password } = req.body
+  let { username, password } = req.body
   const employee = await Employee.findOne({
     where: {
       username
@@ -19,8 +19,8 @@ export const login = asyncHandler(async function login (req, res, next) {
       message: '用户名不存在'
     })
   }
-  const salt = await bcrypt.genSalt(10);
-  password = await bcrypt.hash(password, salt);
+  // const salt = await bcrypt.genSalt(10);
+  // password = await bcrypt.hash(password, salt);
 
   const passwordMatch = await bcrypt.compare(password, employee.password)
   if (!passwordMatch) {
@@ -60,7 +60,8 @@ export const signout = asyncHandler(async (req, res) => {
 
 // 获取当前登录员工的个人信息
 export const me = asyncHandler(async (req, res) => {
-  // 查询部门
+  const role = await Role.findByPk(req.employee?.RoleId)
+  req.employee?.setDataValue('roleName', role?.roleName)
   // 查询角色
   res.status(200).json({
     code: 200,

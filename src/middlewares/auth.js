@@ -16,16 +16,19 @@ export const protect = asyncHandler(async (req, res, next) => {
     const employee = await Employee.findOne({
       where: {
         id: decoded.id
+      },
+      attributes: {
+        exclude: ['password']
       }
     })
-    // 把当前员工信息存储到req中
-    req.employee = employee
     if (employee.status === '离职') {
       return next({
         code: 401,
         message: '账号已停用'
       })
     }
+    // 把当前员工信息存储到req中
+    req.employee = employee
     next()
   } catch (err) {
     next({

@@ -8,6 +8,6 @@ const router = express.Router()
 // 路由规则
 router.route('/login').post(login)
 router.route('/me').get(protect, me)
-router.route('/signout').get(protect, signout)
+router.route('/logout').get(protect, signout)
 
 export default router

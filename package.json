@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/app.js",
-    "start": "pm2 start src/app.js",
+    "dev": "nodemon src/server.js",
+    "start": "pm2 start src/server.js",
     "plop": "plop --plopfile plopfile.cjs"
   },
   "keywords": [],
