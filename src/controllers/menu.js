@@ -15,7 +15,7 @@ export const getAuthMenuTree = asyncHandler(async (req, res) => {
       id: req.employee.RoleId
     }
   })
-  const menus = await Menu.findAll({
+  let menus = await Menu.findAll({
     where: {
       id: role.menuIds ? JSON.parse(role.menuIds) : []
       // id: {
@@ -24,6 +24,20 @@ export const getAuthMenuTree = asyncHandler(async (req, res) => {
     },
     order: [[ 'order', 'ASC' ]]
   })
+
+  // 找到当前菜单项的父项id
+  let menuParentIds = menus.map(m => {
+    return m.getDataValue('parentId')
+  })
+  // 数组去重
+  menuParentIds = Array.from(new Set(menuParentIds))
+  const parentMenus = await Menu.findAll({
+    where: {
+      id: menuParentIds
+    }
+  })
+
+  menus = [...parentMenus, ...menus]
 
   tree = getTreeData(menus)
 

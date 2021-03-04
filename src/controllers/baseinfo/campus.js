@@ -1,4 +1,4 @@
-import { Campus, Employee } from '../../sequelize.js'
+import { Campus, Employee, Depart, Class, Classroom } from '../../sequelize.js'
 import asyncHandler from '../../middlewares/asyncHandler.js'
 import { isDef } from '../../utils/index.js'
 
@@ -10,10 +10,9 @@ export const list = asyncHandler(async (req, res, next) => {
   const pagesize = parseInt(req.query.pagesize ?? 10)
   const query = req.query.query ? JSON.parse(req.query.query) : ''
   
-  const myQuery = {}
   // 处理查询条件
   if (isDef(query.campusName)) {
-    myQuery.campusName = {
+    query.campusName = {
       [Op.startsWith]: query.campusName
     }
   }
@@ -72,6 +71,44 @@ export const update = asyncHandler(async (req, res, next) => {
 
 export const del = asyncHandler(async (req, res, next) => {
   const id = req.params.id
+
+  // 删除校区之前检查该校区下时候有部门、班级等
+  const res1 = await Depart.findAndCountAll({
+    where: {
+      CampusId: id
+    }
+  })
+  if (res1.count > 0) {
+    return res.status(401).json({
+      code: 401,
+      message: '该校区下有部门，请先删除部门'
+    })
+  }
+
+  const res2 = await Class.findAndCountAll({
+    where: {
+      CampusId: id
+    }
+  })
+  if (res2.count > 0) {
+    return res.status(401).json({
+      code: 401,
+      message: '该校区下有班级，请先删除班级'
+    })
+  }
+
+  const res3 = await Classroom.findAndCountAll({
+    where: {
+      CampusId: id
+    }
+  })
+  if (res3.count > 0) {
+    return res.status(401).json({
+      code: 401,
+      message: '该校区下有教室，请先删除教室'
+    })
+  }
+
   const data = await Campus.destroy({
     where: {
       id

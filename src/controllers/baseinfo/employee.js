@@ -28,7 +28,7 @@ export const list = asyncHandler(async (req, res, next) => {
   }
 
   if (query.roleId && query.roleId !== -1) {
-    myQuery.RleId = query.roleId
+    myQuery.RoleId = query.roleId
   }
   
   const data = await Employee.findAndCountAll({
@@ -61,9 +61,16 @@ export const list = asyncHandler(async (req, res, next) => {
 
 export const add = asyncHandler(async (req, res, next) => {
   const salt = await bcrypt.genSalt(10)
+  if (req.body?.mobile.length === 11) {
+    req.body.password = req.body.mobile.substr(5, 6)
+  } else {
+    req.body.password = '123456'
+  }
   req.body.password = await bcrypt.hash(req.body.password, salt)
+  req.body.CampusId = req.body.campusId
+  req.body.DepartId = req.body.departId
+  req.body.RoleId = req.body.roleId
   const data = await Employee.create(req.body)
-
   res.status(201).json({
     code: 201,
     message: '添加成功',
@@ -73,6 +80,9 @@ export const add = asyncHandler(async (req, res, next) => {
 
 export const update = asyncHandler(async (req, res, next) => {
   const id = req.params.id
+  req.body.CampusId = req.body.campusId
+  req.body.DepartId = req.body.departId
+  req.body.RoleId = req.body.roleId
   const data = await Employee.update(req.body, {
     where: {
       id: id

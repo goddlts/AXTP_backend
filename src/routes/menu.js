@@ -7,6 +7,7 @@ const router = express.Router()
 // 路由规则
 // 当前登录用户的路由
 router.route('/routes').get(protect, getAuthMenuTree)
+// 获取所有的菜单(不包含隐藏菜单)
 router.route('/menutrees').get(protect, menuTree)
 
 // 增删改查
