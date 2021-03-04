@@ -45,6 +45,10 @@ const Class = ClassModel(sequelize, DataTypes)
 // 教室
 const Classroom = ClassroomModel(sequelize, DataTypes)
 
+// 校区和员工，关系
+Campus.hasMany(Employee)
+Employee.belongsTo(Campus)
+
 // 部门属于校区，1对多关系
 Campus.hasMany(Depart)
 Depart.belongsTo(Campus)

@@ -1,8 +1,28 @@
-import { Role } from '../sequelize.js'
+import { Role, Employee } from '../sequelize.js'
 import asyncHandler from '../middlewares/asyncHandler.js'
 import { isDef } from '../utils/index.js'
 import pkg from 'sequelize'
 const Op = pkg.Op
+
+export const userids = asyncHandler(async (req, res, next) => {
+  const roleId = req.params.id
+  const sUserIds = req.body.uids
+  const userIds = sUserIds.split(',')
+
+  userIds.forEach(id => {
+    Employee.update({
+      RoleId: roleId
+    }, {
+      where: {
+        id: id
+      }
+    })
+  })
+  res.status(200).json({
+    code: 200,
+    message: '设置成功'
+  })
+})
 
 export const list = asyncHandler(async (req, res, next) => {
   const pagenum = parseInt(req.query.pagenum ?? 1)

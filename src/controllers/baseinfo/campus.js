@@ -10,9 +10,10 @@ export const list = asyncHandler(async (req, res, next) => {
   const pagesize = parseInt(req.query.pagesize ?? 10)
   const query = req.query.query ? JSON.parse(req.query.query) : ''
   
+  const myQuery = {}
   // 处理查询条件
   if (isDef(query.campusName)) {
-    query.campusName = {
+    myQuery.campusName = {
       [Op.startsWith]: query.campusName
     }
   }

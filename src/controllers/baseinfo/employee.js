@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import { Employee, Depart, Role } from '../../sequelize.js'
+import { Employee, Depart, Role, Campus } from '../../sequelize.js'
 import asyncHandler from '../../middlewares/asyncHandler.js'
 import { isDef } from '../../utils/index.js'
 
@@ -11,19 +11,33 @@ export const list = asyncHandler(async (req, res, next) => {
   const pagesize = parseInt(req.query.pagesize ?? 10)
   const query = req.query.query ? JSON.parse(req.query.query) : ''
   
+  const myQuery = {}
   // 处理查询条件
   if (isDef(query.employeeName)) {
-    query.employeeName = {
-      [Op.startsWith]: query.employeeName
+    myQuery.realname = {
+      [Op.startsWith]: query.realname
     }
+  }
+
+  if (query.campusId && query.campusId !== -1) {
+    myQuery.CampusId = query.campusId
+  }
+
+  if (query.departId && query.departId !== -1) {
+    myQuery.DepartId = query.departId
+  }
+
+  if (query.roleId && query.roleId !== -1) {
+    myQuery.RleId = query.roleId
   }
   
   const data = await Employee.findAndCountAll({
     order: [[ 'id', 'DESC' ]],
-    where: query,
+    where: myQuery,
     include: [
       { model: Depart },
-      { model: Role }
+      { model: Role },
+      { model: Campus }
     ],
     // 排除密码数据
     attributes: { exclude: ['password'] },
