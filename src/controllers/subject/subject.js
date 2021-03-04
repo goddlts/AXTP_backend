@@ -1,5 +1,9 @@
 import { Subject, Employee } from '../../sequelize.js'
 import asyncHandler from '../../middlewares/asyncHandler.js'
+import { isDef } from '../../utils/index.js'
+
+import pkg from 'sequelize'
+const Op = pkg.Op
 
 export const list = asyncHandler(async (req, res, next) => {
   const pagenum = parseInt(req.query.pagenum ?? 1)
@@ -7,12 +11,12 @@ export const list = asyncHandler(async (req, res, next) => {
   const query = req.query.query ? JSON.parse(req.query.query) : ''
   
   // 处理查询条件
-  if (query.subjectName) {
+  if (isDef(query.subjectName)) {
     query.subjectName = {
       [Op.startsWith]: query.subjectName
     }
   }
-  
+
   const data = await Subject.findAndCountAll({
     order: [[ 'id', 'DESC' ]],
     where: query,

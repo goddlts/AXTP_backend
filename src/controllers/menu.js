@@ -128,7 +128,6 @@ function getTreeData (menus) {
   tree.forEach(menu => {
     menus.forEach(subMenu => {
       if (menu.id === subMenu.parentId) {
-        console.log(menu.id, subMenu.parentId)
         menu.dataValues.children.push(subMenu)
       }
     })
